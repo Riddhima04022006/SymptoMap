@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SymptoMap</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo">Sympto<span>Map</span></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav id="navMenu">
+      <a href="#">Home</a>
+      <a href="/about.html">About</a>
+      <a href="#">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+
+    <div class="hero-title">
+      <h1>Sympto<span>Map</span></h1>
+    </div>
+
+    <div class="hero-content">
+      <h2>Learn smarter, not harder.</h2>
+      <p>
+        Join thousands of learners, discovering a simpler and more effective way to study physiotherapy.
+      </p>
+    </div>
+
+    <div class="body-container" id="bodyContainer">
+      <div id="threeContainer" class="body-image-inner"></div>
+      <div class="body-mask"></div>
+    </div>
+
+    <div class="curve"></div>
+  </section>
+
+  <section class="why">
+    <h3>Why SymptoMap?</h3>
+    <div class="why-grid">
+      <div class="why-card">
+        <strong>Feature 1</strong>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </div>
+      <div class="why-card">
+        <strong>Feature 2</strong>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </div>
+      <div class="why-card">
+        <strong>Feature 3</strong>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+      </div>
+    </div>
+  </section>
+
+  <section class="disclaimer">
+    SymptoMap is an educational platform for learning and revision only.
+    It does not replace professional medical education or clinical judgment.
+  </section>
+
+  <footer>
+    © 2026 SymptoMap
+  </footer>
+
+  <script>
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navMenu').classList.toggle('open');
+    });
+  </script>
+  <script type="module" src="/script.js"></script>
+</body>
+</html>

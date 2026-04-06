@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SymptoMap | Professional Diagnostic Tree</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-mint: #b8e2d4;      
+            --brand-green: #56C596;     
+            --brand-navy: #2d5a88;      
+            --line-color: #2d5a88;
+            /* Added missing variables for navbar */
+            --navbar-bg: rgba(184, 232, 208, 0.85); 
+            --accent-blue: #2e6da4;
+            --accent-green: #38a87a;
+            --navy: #0d2f52;
+            --teal: #1d8a7a;
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--brand-mint) 0%, #9bc7ba 100%);
+            font-family: 'DM Sans', sans-serif;
+            margin: 0; padding: 0; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+            padding-top: 80px; /* Space for fixed navbar */
+        }
+
+        /* --- FIXED NAVBAR STYLES --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 8%;
+            background: var(--navbar-bg);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 16px rgba(29, 138, 122, 0.12);
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--accent-green); }
+
+        .navbar nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .navbar a:hover { color: var(--teal); }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            background-color: var(--brand-green);
+            border: none;
+            gap: 5px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: white;
+            transition: all 0.3s;
+        }
+
+        /* --- TREE CONTAINER & NODES --- */
+        .tree-container { 
+            margin-top: 40px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            padding-bottom: 100px; 
+        }
+
+        h1.tree-header { font-size: 2.2rem; color: var(--brand-navy); margin-bottom: 30px; }
+        h1.tree-header span { color: var(--brand-green); }
+
+        .node {
+            padding: 14px 22px; background: white; border: 2px solid var(--brand-green);
+            border-radius: 12px; cursor: pointer; font-weight: 600; color: var(--brand-navy);
+            transition: all 0.4s ease; z-index: 10; min-width: 180px; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin: 0 15px; position: relative;
+            box-sizing: border-box;
+        }
+
+        .node.active { background: var(--brand-green); color: white; border-color: var(--brand-navy); }
+        .node.leaf { background: var(--brand-navy); color: white; cursor: default; border-color: var(--brand-green); }
+        .node small { display: block; font-size: 0.75rem; font-weight: 400; margin-top: 6px; opacity: 0.85; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 4px; }
+
+        .branch-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .children-container { display: flex; justify-content: center; position: relative; padding-top: 40px; opacity: 0; transition: all 0.5s ease; }
+        .children-container.visible { opacity: 1; }
+
+        .branch-group > .children-container::before { content: ''; position: absolute; top: 0; left: 50%; width: 2px; height: 40px; background: var(--line-color); opacity: 0.3; transform: translateX(-50%); }
+        .child-item { position: relative; display: flex; flex-direction: column; align-items: center; transition: all 0.4s ease; }
+        .child-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; border-top: 2px solid var(--line-color); opacity: 0.3; }
+        .child-item::after { content: ''; position: absolute; top: 0; left: 50%; width: 2px; height: 20px; background: var(--line-color); opacity: 0.3; transform: translateX(-50%); }
+        .child-item:first-child::before { left: 50%; }
+        .child-item:last-child::before { right: 50%; }
+        .child-item:only-child::before { display: none; }
+        .node-space { margin-top: 20px; }
+
+        .reset-btn {
+            margin-top: 40px; padding: 12px 35px; background: var(--brand-navy); color: white;
+            border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+
+        /* --- MOBILE REFINEMENT --- */
+        @media (max-width: 768px) {
+            .navbar { padding: 0.8rem 6%; }
+            .nav-toggle { display: flex; }
+            .navbar nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--navbar-bg);
+                flex-direction: column;
+                padding: 1.5rem;
+                gap: 1.2rem;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+            .navbar nav.open { display: flex; }
+
+            .children-container { flex-direction: column; padding-top: 15px; gap: 10px; width: 100%; align-items: center; }
+            .child-item::before, .child-item::after, .branch-group > .children-container::before { display: none; }
+            
+            .node { 
+                width: 90vw; 
+                max-width: 320px; 
+                min-width: unset; 
+                margin: 5px 0; 
+                padding: 12px 15px; 
+                font-size: 0.95rem;
+            }
+            
+            .node-space { margin-top: 5px; }
+            .child-item.fade-out { opacity: 0; max-height: 0; margin: 0; pointer-events: none; overflow: hidden; transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">Sympto<span>Map</span></div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="navMenu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="#">Contact</a>
+    </nav>
+</header>
+
+<div class="tree-container">
+    <h1 class="tree-header">Diagnostic <span>Tree</span></h1>
+    <div class="branch-group" id="root-group">
+        <div class="node active" id="node-root" onclick="expandNode('root', this)">LBP</div>
+        <div class="children-container" id="children-root"></div>
+    </div>
+    <button class="reset-btn" onclick="resetTree()">Reset Diagnosis</button>
+</div>
+
+<script>
+    // Navigation Toggle Logic
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navMenu').classList.toggle('open');
+    });
+
+    const treeData = {
+        'root': [{ id: 'acute', label: 'ACUTE' }, { id: 'chronic', label: 'CHRONIC' }],
+        'acute': [
+            { id: 'traumatic', label: 'Traumatic' }, 
+            { id: 'nontraumatic', label: 'Non Traumatic' }
+        ],
+        'traumatic': [
+            { id: 't_rad', label: 'Radiating' }, 
+            { id: 't_nonrad', label: 'Non Radiating' }
+        ],
+        't_rad': [
+            { id: 'adh', label: 'ACUTE DISK HERNIATION', sub: 'SLRT +ve, Slump +ve', isLeaf: true }
+        ],
+        't_nonrad': [
+            { id: 't_active', label: 'Pain on Active Movement' },
+            { id: 't_passive', label: 'Pain on Passive Stretch', sub: 'LIGAMENT SPRAIN', isLeaf: true }
+        ],
+        't_active': [
+            { id: 'frac', label: 'FRACTURE', sub: 'Percussion/Tap Test +ve', isLeaf: true },
+            { id: 'strain', label: 'STRAIN', sub: 'Percussion/Tap Test -ve', isLeaf: true }
+        ],
+        'nontraumatic': [
+            { id: 'nt_rad', label: 'Radiating', sub: 'From flank to groin, cramping pain (KIDNEY STONES)', isLeaf: true },
+            { id: 'nt_nrad', label: 'Non Radiating', sub: 'Constant deep, gnawing ache, worse at night (OSTEOMYELITIS)', isLeaf: true },
+            { id: 'nt_prev', label: 'Previous history of Pain', sub: 'Aggravation of chronic condition', isLeaf: true }
+        ],
+        'chronic': [
+            { id: 'c_rad', label: 'Radiating' },
+            { id: 'c_nrad', label: 'Non-Radiating' }
+        ],
+        'c_rad': [
+            { id: 'c_flex', label: 'Pain aggravate on Flexion' },
+            { id: 'c_ext_rad', label: 'Pain aggravate on Extension' }
+        ],
+        'c_flex': [
+            { id: 'cdp', label: 'CHRONIC DISK PROLAPSE', sub: 'SLRT +ve, Slump +ve', isLeaf: true }
+        ],
+        'c_ext_rad': [
+            { id: 'lss', label: 'LUMBAR SPINAL STENOSIS', sub: 'Shopping Cart Sign +ve, Two Stage Treadmill Test +ve', isLeaf: true }
+        ],
+        'c_nrad': [
+            { id: 'c_ext_nonrad', label: 'Pain aggravate on Extension' },
+            { id: 'c_rest', label: 'Pain aggravate on Rest' },
+            { id: 'c_pos', label: 'Asymmetrical Posture' }
+        ],
+        'c_ext_nonrad': [
+            { id: 'spon', label: 'SPONDYLOLISTHESIS', sub: 'Stork step off Sign +ve', isLeaf: true },
+            { id: 'facet', label: 'FACET JOINT OA', sub: "Kemp's Test, Facet overpressure", isLeaf: true }
+        ],
+        'c_rest': [
+            { id: 'as', label: 'ANKYLOSING SPONDYLITIS', sub: "Ganslen's Test, Flesche's, Schober's", isLeaf: true }
+        ],
+        'c_pos': [
+            { id: 'scol', label: 'SCOLIOSIS', sub: "Pointed by Adam's forward bend test & Rib hump", isLeaf: true }
+        ]
+    };
+
+    function expandNode(nodeId, element) {
+        const branchGroup = element.parentElement;
+        const currentItem = branchGroup.parentElement; 
+        const container = branchGroup.querySelector('.children-container');
+
+        if (window.innerWidth <= 768) {
+            const siblings = currentItem.parentElement.querySelectorAll(':scope > .child-item');
+            siblings.forEach(sib => {
+                if (sib !== currentItem && currentItem !== document.getElementById('root-group')) {
+                    sib.classList.add('fade-out');
+                }
+            });
+        }
+
+        const rowNodes = element.parentElement.parentElement.querySelectorAll(':scope > .child-item .node, :scope > .node');
+        rowNodes.forEach(n => n.classList.remove('active'));
+        element.classList.add('active');
+
+        container.innerHTML = '';
+        container.classList.remove('visible');
+
+        const children = treeData[nodeId];
+        if (children) {
+            children.forEach(child => {
+                const childItem = document.createElement('div');
+                childItem.className = 'child-item';
+                const btn = document.createElement('div');
+                btn.className = `node node-space ${child.isLeaf ? 'leaf' : ''}`;
+                btn.innerHTML = `<div>${child.label}</div>${child.sub ? `<small>${child.sub}</small>` : ''}`;
+                if (!child.isLeaf) btn.onclick = () => expandNode(child.id, btn);
+
+                const nextContainer = document.createElement('div');
+                nextContainer.className = 'children-container';
+                const nextGroup = document.createElement('div');
+                nextGroup.className = 'branch-group';
+                nextGroup.appendChild(btn);
+                nextGroup.appendChild(nextContainer);
+                childItem.appendChild(nextGroup);
+                container.appendChild(childItem);
+            });
+            setTimeout(() => container.classList.add('visible'), 50);
+        }
+    }
+
+    function resetTree() {
+        const rootNode = document.getElementById('node-root');
+        const container = document.getElementById('children-root');
+        container.innerHTML = '';
+        document.querySelectorAll('.child-item').forEach(el => el.classList.remove('fade-out'));
+        expandNode('root', rootNode);
+    }
+
+    window.onload = () => expandNode('root', document.getElementById('node-root'));
+</script>
+</body>
+</html>
