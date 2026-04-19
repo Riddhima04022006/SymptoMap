@@ -162,7 +162,7 @@ body {
 
 .body-container {
   position: absolute;
-  top: 120px;
+  top: 90px;
   left: 50%;
   width: 650px;
   height: 900px;
@@ -179,7 +179,7 @@ body {
 }
 
 .body-container.reveal {
-  top: 30px;
+  top: 0px;
   opacity: 1;
   transform: translate(-50%, 0) scale(1.15);
   pointer-events: auto;

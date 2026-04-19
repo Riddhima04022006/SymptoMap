@@ -155,18 +155,37 @@
 
         /* --- MOBILE --- */
         @media (max-width: 768px) {
-            .navbar { padding: 0.8rem 6%; }
-            .nav-toggle { display: flex; }
-            .navbar nav {
-                display: none;
-                position: absolute;
-                top: 100%; left: 0; width: 100%;
-                background: var(--navbar-bg);
-                flex-direction: column;
-                padding: 1.5rem; gap: 1.2rem;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            }
-            .navbar nav.open { display: flex; }
+            .navbar {
+            padding: 1rem 5%;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .nav-toggle {
+            display: flex;
+        }
+
+        .navbar nav {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 0.8rem 0 0.4rem;
+            gap: 0.2rem;
+        }
+
+        .navbar nav.open {
+            display: flex;
+        }
+
+        .navbar a {
+            margin-left: 0;
+            padding: 0.55rem 0;
+            font-size: 1rem;
+            border-top: 1px solid rgba(29, 138, 122, 0.15);
+            width: 100%;
+            text-align: left;
+        }
+
             h1 { font-size: 2rem; margin-bottom: 40px;}
             .team-grid { gap: 1.5rem; }
             .profile-img { width: 100px; height: 100px; }
@@ -193,14 +212,14 @@
 
     <div class="team-grid">
         <div class="card">
+            <img src="arpita.jpeg" alt="Dr. Arpita Singh" class="profile-img">
+            <h2>Dr. Arpita Singh</h2>
+            <p>Subject Matter Expert & Content Writer</p>
+        </div>
+        <div class="card">
             <img src="Icon_Riddhima.png" alt="Ms. Riddhima" class="profile-img">
             <h2>Ms. Riddhima</h2>
             <p>Web Developer & Designer</p>
-        </div>
-        <div class="card">
-            <img src="arpita.jpeg" alt="Dr. Arpita Singh" class="profile-img">
-            <h2>Dr. Arpita Singh</h2>
-            <p>Co-author & Content Writer</p>
         </div>
     </div>
 
