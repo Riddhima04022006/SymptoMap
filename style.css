@@ -239,7 +239,7 @@ body {
   background: linear-gradient(135deg, var(--green-card), var(--green-card-2));
   padding: 2rem 1.8rem;
   border-radius: 20px;
-  color: #0b2a1e;
+  color: #221753;
   text-align: left;
   box-shadow: 0 4px 20px rgba(58, 175, 122, 0.18);
   transition: transform 0.2s, box-shadow 0.2s;
@@ -255,7 +255,7 @@ body {
   font-size: 1.05rem;
   font-weight: 700;
   margin-bottom: 0.6rem;
-  color: #082018;
+  color: #221753;
 }
 
 .disclaimer {

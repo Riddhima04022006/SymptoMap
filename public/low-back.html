@@ -7,12 +7,11 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --brand-mint: #b8e2d4;      
-            --brand-green: #56C596;     
-            --brand-navy: #2d5a88;      
+            --brand-mint: #b8e2d4;
+            --brand-green: #56C596;
+            --brand-navy: #2d5a88;
             --line-color: #2d5a88;
-            /* Added missing variables for navbar */
-            --navbar-bg: rgba(184, 232, 208, 0.85); 
+            --navbar-bg: rgba(184, 232, 208, 0.85);
             --accent-blue: #2e6da4;
             --accent-green: #38a87a;
             --navy: #0d2f52;
@@ -25,80 +24,29 @@
             margin: 0; padding: 0; min-height: 100vh;
             display: flex; flex-direction: column; align-items: center;
             overflow-x: hidden;
-            padding-top: 80px; /* Space for fixed navbar */
+            padding-top: 80px;
         }
 
-        /* --- FIXED NAVBAR STYLES --- */
+        /* NAVBAR */
         .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
             padding: 0.8rem 8%;
             background: var(--navbar-bg);
             backdrop-filter: blur(8px);
             box-shadow: 0 2px 16px rgba(29, 138, 122, 0.12);
             box-sizing: border-box;
         }
-
-        .logo {
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: var(--accent-blue);
-            letter-spacing: -0.5px;
-        }
-
+        .logo { font-size: 1.7rem; font-weight: 700; color: var(--accent-blue); letter-spacing: -0.5px; }
         .logo span { color: var(--accent-green); }
-
-        .navbar nav {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .navbar a {
-            text-decoration: none;
-            color: var(--navy);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s;
-        }
-
+        .navbar nav { display: flex; align-items: center; gap: 2rem; }
+        .navbar a { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 0.95rem; transition: color 0.2s; }
         .navbar a:hover { color: var(--teal); }
+        .nav-toggle { display: none; flex-direction: column; background-color: var(--brand-green); border: none; gap: 5px; cursor: pointer; padding: 8px; border-radius: 6px; }
+        .nav-toggle span { display: block; width: 22px; height: 2px; background: white; transition: all 0.3s; }
 
-        .nav-toggle {
-            display: none;
-            flex-direction: column;
-            background-color: var(--brand-green);
-            border: none;
-            gap: 5px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-        }
-
-        .nav-toggle span {
-            display: block;
-            width: 22px;
-            height: 2px;
-            background: white;
-            transition: all 0.3s;
-        }
-
-        /* --- TREE CONTAINER & NODES --- */
-        .tree-container { 
-            margin-top: 40px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            width: 100%; 
-            padding-bottom: 100px; 
-        }
-
+        /* TREE */
+        .tree-container { margin-top: 40px; display: flex; flex-direction: column; align-items: center; width: 100%; padding-bottom: 100px; }
         h1.tree-header { font-size: 2.2rem; color: var(--brand-navy); margin-bottom: 30px; }
         h1.tree-header span { color: var(--brand-green); }
 
@@ -109,15 +57,15 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin: 0 15px; position: relative;
             box-sizing: border-box;
         }
-
         .node.active { background: var(--brand-green); color: white; border-color: var(--brand-navy); }
-        .node.leaf { background: var(--brand-navy); color: white; cursor: default; border-color: var(--brand-green); }
-        .node small { display: block; font-size: 0.75rem; font-weight: 400; margin-top: 6px; opacity: 0.85; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 4px; }
+        .node.leaf { background: linear-gradient(135deg, #2d5a88, #1d8a7a); color: white; cursor: default; border-color: var(--brand-green); }
+        .node.leaf.has-info { cursor: pointer; background: linear-gradient(135deg, #2d5a88, #1d8a7a); }
+        .node.leaf.has-info:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(29,138,122,0.3); }
+        .node small { display: block; font-size: 0.75rem; font-weight: 400; margin-top: 6px; opacity: 0.85; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 4px; }
 
         .branch-group { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .children-container { display: flex; justify-content: center; position: relative; padding-top: 40px; opacity: 0; transition: all 0.5s ease; }
         .children-container.visible { opacity: 1; }
-
         .branch-group > .children-container::before { content: ''; position: absolute; top: 0; left: 50%; width: 2px; height: 40px; background: var(--line-color); opacity: 0.3; transform: translateX(-50%); }
         .child-item { position: relative; display: flex; flex-direction: column; align-items: center; transition: all 0.4s ease; }
         .child-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; border-top: 2px solid var(--line-color); opacity: 0.3; }
@@ -126,44 +74,205 @@
         .child-item:last-child::before { right: 50%; }
         .child-item:only-child::before { display: none; }
         .node-space { margin-top: 20px; }
+        .reset-btn { margin-top: 40px; padding: 12px 35px; background: var(--brand-navy); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; }
 
-        .reset-btn {
-            margin-top: 40px; padding: 12px 35px; background: var(--brand-navy); color: white;
-            border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed; inset: 0; z-index: 2000;
+            background: rgba(13, 47, 82, 0.6);
+            backdrop-filter: blur(7px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-overlay.active {
+            display: flex;
+            animation: overlayIn 0.25s ease forwards;
+        }
+        @keyframes overlayIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 28px;
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 40px 100px rgba(13,47,82,0.25), 0 8px 30px rgba(13,47,82,0.15);
+            animation: cardIn 0.38s cubic-bezier(0.34,1.46,0.64,1) forwards;
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        .modal-card::-webkit-scrollbar {
+            display: none;
+        }
+        @keyframes cardIn {
+            from { transform: translateY(50px) scale(0.93); opacity: 0; }
+            to   { transform: translateY(0) scale(1); opacity: 1; }
         }
 
-        /* --- MOBILE REFINEMENT --- */
+        /* Curved header */
+        .modal-header {
+            background: linear-gradient(135deg, #163d65 0%, #2a5888 50%, #1a7a6e 100%);
+            border-radius: 28px 28px 0 0;
+            padding: 30px 26px 56px;
+            position: relative;
+            overflow: hidden;
+        }
+        /* Wave curve at bottom */
+        .modal-header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; left: -5%; right: -5%;
+            height: 40px;
+            background: #ffffff;
+            border-radius: 60% 60% 0 0 / 100% 100% 0 0;
+        }
+        /* Decorative blobs */
+        .blob1 {
+            position: absolute; top: -50px; right: -50px;
+            width: 180px; height: 180px; border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            pointer-events: none;
+        }
+        .blob2 {
+            position: absolute; bottom: 10px; left: -40px;
+            width: 130px; height: 130px; border-radius: 50%;
+            background: rgba(86,197,150,0.12);
+            pointer-events: none;
+        }
+
+        .modal-close {
+            position: absolute; top: 14px; right: 14px;
+            width: 32px; height: 32px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 50%;
+            color: white; font-size: 1rem;
+            cursor: pointer; display: flex;
+            align-items: center; justify-content: center;
+            transition: background 0.2s, transform 0.2s;
+            z-index: 10;
+        }
+        .modal-close:hover { background: rgba(255,255,255,0.28); transform: scale(1.1) rotate(90deg); }
+
+        .modal-badge {
+            display: inline-block;
+            background: rgba(86,197,150,0.22);
+            color: #a0dfc6;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(160,223,198,0.3);
+            margin-bottom: 10px;
+        }
+        .modal-title {
+            font-size: 1.55rem; font-weight: 700; color: #fff;
+            margin: 0 0 5px; line-height: 1.2;
+        }
+        .modal-subtitle {
+            font-size: 0.82rem; color: rgba(184,226,212,0.8);
+            margin: 0; font-weight: 400;
+        }
+
+        /* Body */
+        .modal-body { padding: 6px 22px 26px; }
+
+        .section-label {
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 1.8px;
+            text-transform: uppercase; color: var(--accent-green);
+            margin: 18px 0 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .section-label::after {
+            content: ''; flex: 1; height: 1px;
+            background: linear-gradient(to right, rgba(86,197,150,0.4), transparent);
+        }
+
+        /* Info card with shading */
+        .info-card {
+            background: linear-gradient(160deg, #f5fcf9 0%, #eaf6f1 100%);
+            border-radius: 18px;
+            padding: 6px 16px;
+            border: 1px solid rgba(86,197,150,0.22);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 2px 12px rgba(86,197,150,0.08);
+        }
+
+        .info-item {
+            display: flex; gap: 12px; align-items: flex-start;
+            padding: 13px 0;
+        }
+        .info-item + .info-item {
+            border-top: 1px solid rgba(86,197,150,0.15);
+        }
+
+        .info-icon {
+            width: 34px; height: 34px; min-width: 34px;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem;
+        }
+        .info-icon.green {
+            background: linear-gradient(135deg, #56C596, #2fa87a);
+            box-shadow: 0 3px 10px rgba(56,168,122,0.35);
+        }
+        .info-icon.blue {
+            background: linear-gradient(135deg, #4d9fe0, #2a5888);
+            box-shadow: 0 3px 10px rgba(45,90,136,0.3);
+        }
+        .info-icon.amber {
+            background: linear-gradient(135deg, #f4a94e, #d97b1a);
+            box-shadow: 0 3px 10px rgba(217,123,26,0.3);
+        }
+
+        .info-text strong {
+            display: block; font-size: 0.87rem; font-weight: 600;
+            color: var(--navy); margin-bottom: 3px;
+        }
+        .info-text span {
+            font-size: 0.79rem; color: #5a7a8a; line-height: 1.5;
+        }
+
+        /* Tags */
+        .tag-row {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #eef8f4, #e4f5ef);
+            border-radius: 16px;
+            border: 1px solid rgba(86,197,150,0.2);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+        }
+        .tag {
+            background: white;
+            border: 1.5px solid rgba(86,197,150,0.4);
+            color: var(--teal);
+            font-size: 0.73rem; font-weight: 600;
+            padding: 5px 13px; border-radius: 30px;
+            box-shadow: 0 2px 6px rgba(86,197,150,0.1);
+        }
+
+        /* Mobile */
         @media (max-width: 768px) {
             .navbar { padding: 0.8rem 6%; }
             .nav-toggle { display: flex; }
             .navbar nav {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--navbar-bg);
-                flex-direction: column;
-                padding: 1.5rem;
-                gap: 1.2rem;
+                display: none; position: absolute; top: 100%; left: 0;
+                width: 100%; background: var(--navbar-bg);
+                flex-direction: column; padding: 1.5rem; gap: 1.2rem;
                 box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             }
             .navbar nav.open { display: flex; }
-
             .children-container { flex-direction: column; padding-top: 15px; gap: 10px; width: 100%; align-items: center; }
             .child-item::before, .child-item::after, .branch-group > .children-container::before { display: none; }
-            
-            .node { 
-                width: 90vw; 
-                max-width: 320px; 
-                min-width: unset; 
-                margin: 5px 0; 
-                padding: 12px 15px; 
-                font-size: 0.95rem;
-            }
-            
+            .node { width: 90vw; max-width: 320px; min-width: unset; margin: 5px 0; padding: 12px 15px; font-size: 0.95rem; }
             .node-space { margin-top: 5px; }
             .child-item.fade-out { opacity: 0; max-height: 0; margin: 0; pointer-events: none; overflow: hidden; transform: translateY(-10px); }
+            .modal-title { font-size: 1.25rem; }
         }
     </style>
 </head>
@@ -176,11 +285,82 @@
     </button>
     <nav id="navMenu">
       <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="#">Contact</a>
+      <a href="#">About</a>
+      <a href="contact.html">Contact</a>
     </nav>
 </header>
 
+<div class="modal-overlay" id="kidneyModal" onclick="handleOverlayClick(event)">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+        <div class="modal-header">
+            <div class="blob1"></div>
+            <div class="blob2"></div>
+            <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+            <div class="modal-badge">Diagnosis Details</div>
+            <h2 class="modal-title" id="modalTitle">🪨 KIDNEY STONES</h2>
+            <p class="modal-subtitle">Acute · Non-Traumatic · Imaging & Labs</p>
+        </div>
+
+        <div class="modal-body">
+
+            <p class="section-label">1. Imaging</p>
+            <div class="info-card">
+                <div class="info-item">
+                    <div class="info-icon blue">📋</div>
+                    <div class="info-text">
+                        <strong>Non-Contrast CT Scan &nbsp;<span style="font-size:0.7rem;background:#dff0fa;color:#2a5888;padding:2px 8px;border-radius:20px;font-weight:700;">Gold STANDARD</span></strong>
+                        <span>A CT scan of the Kidneys, Ureters and Bladder is highly sensitive.</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon green">🔊</div>
+                    <div class="info-text">
+                        <strong>Ultrasound</strong>
+                        <span>Especially for pregnant women or younger patients.</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="section-label">2. Laboratory Investigations</p>
+            <div class="info-card">
+                <div class="info-item">
+                    <div class="info-icon green">🧪</div>
+                    <div class="info-text">
+                        <strong>Urinalysis</strong>
+                        <span>Checked for presence of Hematuria and screen for infection.</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon blue">🩸</div>
+                    <div class="info-text">
+                        <strong>Serum Creatinine & BUN</strong>
+                        <span>To evaluate kidney function and identify blockage.</span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon amber">🥣</div>
+                    <div class="info-text">
+                        <strong>24-hr Urine Collection</strong>
+                        <span>To analyze chemical composition of the urine.</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="section-label">Key Indicators</p>
+            <div class="tag-row">
+                <span class="tag">Flank → Groin pain</span>
+                <span class="tag">Cramping / colicky</span>
+                <span class="tag">Radiating</span>
+                <span class="tag">Hematuria</span>
+                <span class="tag">Acute onset</span>
+                <span class="tag">Non-traumatic</span>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- TREE -->
 <div class="tree-container">
     <h1 class="tree-header">Diagnostic <span>Tree</span></h1>
     <div class="branch-group" id="root-group">
@@ -191,7 +371,6 @@
 </div>
 
 <script>
-    // Navigation Toggle Logic
     document.getElementById('navToggle').addEventListener('click', () => {
       document.getElementById('navMenu').classList.toggle('open');
     });
@@ -199,11 +378,11 @@
     const treeData = {
         'root': [{ id: 'acute', label: 'ACUTE' }, { id: 'chronic', label: 'CHRONIC' }],
         'acute': [
-            { id: 'traumatic', label: 'Traumatic' }, 
+            { id: 'traumatic', label: 'Traumatic' },
             { id: 'nontraumatic', label: 'Non Traumatic' }
         ],
         'traumatic': [
-            { id: 't_rad', label: 'Radiating' }, 
+            { id: 't_rad', label: 'Radiating' },
             { id: 't_nonrad', label: 'Non Radiating' }
         ],
         't_rad': [
@@ -218,9 +397,18 @@
             { id: 'strain', label: 'STRAIN', sub: 'Percussion/Tap Test -ve', isLeaf: true }
         ],
         'nontraumatic': [
-            { id: 'nt_rad', label: 'Radiating', sub: 'From flank to groin, cramping pain (KIDNEY STONES)', isLeaf: true },
-            { id: 'nt_nrad', label: 'Non Radiating', sub: 'Constant deep, gnawing ache, worse at night (OSTEOMYELITIS)', isLeaf: true },
-            { id: 'nt_prev', label: 'Previous history of Pain', sub: 'Aggravation of chronic condition', isLeaf: true }
+            { id: 'nt_rad', label: 'Radiating' },
+            { id: 'nt_nrad', label: 'Non Radiating' },
+            { id: 'nt_prev', label: 'Previous History of Pain' }
+        ],
+        'nt_rad': [
+            { id: 'nt_rad_leaf', label: 'KIDNEY STONES', sub: 'Tap for details ›', isLeaf: true, hasInfo: 'kidney' }
+        ],
+        'nt_nrad': [
+            { id: 'nt_nrad_leaf', label: 'OSTEOMYELITIS', sub: 'Constant deep, gnawing ache, worse at night', isLeaf: true }
+        ],
+        'nt_prev': [
+            { id: 'nt_prev_leaf', label: 'Aggravation of Chronic Condition', sub: 'Previous history of similar pain', isLeaf: true }
         ],
         'chronic': [
             { id: 'c_rad', label: 'Radiating' },
@@ -249,13 +437,13 @@
             { id: 'as', label: 'ANKYLOSING SPONDYLITIS', sub: "Ganslen's Test, Flesche's, Schober's", isLeaf: true }
         ],
         'c_pos': [
-            { id: 'scol', label: 'SCOLIOSIS', sub: "Pointed by Adam's forward bend test & Rib hump", isLeaf: true }
+            { id: 'scol', label: 'SCOLIOSIS', sub: "Adam's forward bend test & Rib hump", isLeaf: true }
         ]
     };
 
     function expandNode(nodeId, element) {
         const branchGroup = element.parentElement;
-        const currentItem = branchGroup.parentElement; 
+        const currentItem = branchGroup.parentElement;
         const container = branchGroup.querySelector('.children-container');
 
         if (window.innerWidth <= 768) {
@@ -280,9 +468,14 @@
                 const childItem = document.createElement('div');
                 childItem.className = 'child-item';
                 const btn = document.createElement('div');
-                btn.className = `node node-space ${child.isLeaf ? 'leaf' : ''}`;
+                btn.className = `node node-space ${child.isLeaf ? 'leaf' : ''} ${child.hasInfo ? 'has-info' : ''}`;
                 btn.innerHTML = `<div>${child.label}</div>${child.sub ? `<small>${child.sub}</small>` : ''}`;
-                if (!child.isLeaf) btn.onclick = () => expandNode(child.id, btn);
+
+                if (!child.isLeaf) {
+                    btn.onclick = () => expandNode(child.id, btn);
+                } else if (child.hasInfo === 'kidney') {
+                    btn.onclick = () => openModal('kidneyModal');
+                }
 
                 const nextContainer = document.createElement('div');
                 nextContainer.className = 'children-container';
@@ -297,12 +490,26 @@
         }
     }
 
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+        document.body.style.overflow = '';
+    }
+
+    function handleOverlayClick(e) {
+        if (e.target === e.currentTarget) closeModal();
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
     function resetTree() {
-        const rootNode = document.getElementById('node-root');
-        const container = document.getElementById('children-root');
-        container.innerHTML = '';
+        document.getElementById('children-root').innerHTML = '';
         document.querySelectorAll('.child-item').forEach(el => el.classList.remove('fade-out'));
-        expandNode('root', rootNode);
+        expandNode('root', document.getElementById('node-root'));
     }
 
     window.onload = () => expandNode('root', document.getElementById('node-root'));

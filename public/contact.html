@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About | SymptoMap</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-mint: #b8e2d4;      
+            --brand-green: #56C596;     
+            --brand-navy: #2d5a88;      
+            --navbar-bg: rgba(184, 232, 208, 0.85); 
+            --accent-blue: #2e6da4;
+            --accent-green: #38a87a;
+            --navy: #0d2f52;
+            --text-dark: #1a4d6b;
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background: linear-gradient(180deg, var(--brand-mint) 0%, #9bc7ba 100%);
+            font-family: 'DM Sans', sans-serif;
+            margin: 0; padding: 0; min-height: 100vh;
+            display: flex; flex-direction: column;
+            color: var(--text-dark);
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 8%;
+            background: var(--navbar-bg);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 2px 16px rgba(29, 138, 122, 0.12);
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--accent-green); }
+
+        .navbar nav { display: flex; align-items: center; gap: 2rem; }
+
+        .navbar a {
+            text-decoration: none;
+            color: var(--navy);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .navbar a:hover { color: var(--brand-green); }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            background-color: var(--brand-green);
+            border: none; gap: 5px; cursor: pointer;
+            padding: 8px; border-radius: 6px;
+        }
+
+        .nav-toggle span {
+            display: block; width: 22px; height: 2px;
+            background: white; transition: all 0.3s;
+        }
+
+        /* --- ABOUT CONTENT --- */
+        .about-container {
+            margin-top: 120px;
+            padding: 0 8% 50px 8%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        h1 { font-size: 2.5rem; color: var(--brand-navy); margin-bottom: 50px; }
+        h1 span { color: var(--brand-green); }
+
+        /* Updated Grid & Card Styles for Images */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 60px;
+            align-items: start; /* Avoid stretching cards */
+        }
+        .card p a {
+            transition: color 0.2s;
+        }
+
+        .card p a:hover {
+            color: var(--brand-green);
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 2.5rem 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center image within card */
+        }
+
+        .card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* New Image Specific Styles */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            object-fit: cover; /* Ensures image fills the circle properly */
+            object-position: center; /* Center crop */
+        }
+
+        .card h2 { color: var(--brand-navy); margin-bottom: 0.5rem; font-size: 1.5rem; }
+        .card p { font-size: 1.1rem; color: var(--navy); font-weight: 500; margin: 0; }
+
+        .attribution-box {
+            background: var(--brand-navy);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            max-width: 600px;
+            margin-bottom: 50px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .attribution-box a { color: var(--brand-green); text-decoration: none; font-weight: bold; }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background-color: #9ad4b8;
+            color: #1a4d6b;
+            font-weight: 600;
+        }
+
+        /* --- MOBILE --- */
+        @media (max-width: 768px) {
+            .navbar {
+            padding: 1rem 5%;
+            flex-wrap: wrap;
+            gap: 0;
+        }
+
+        .nav-toggle {
+            display: flex;
+        }
+
+        .navbar nav {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            padding: 0.8rem 0 0.4rem;
+            gap: 0.2rem;
+        }
+
+        .navbar nav.open {
+            display: flex;
+        }
+
+        .navbar a {
+            margin-left: 0;
+            padding: 0.55rem 0;
+            font-size: 1rem;
+            border-top: 1px solid rgba(29, 138, 122, 0.15);
+            width: 100%;
+            text-align: left;
+        }
+
+            h1 { font-size: 2rem; margin-bottom: 40px;}
+            .team-grid { gap: 1.5rem; }
+            .profile-img { width: 100px; height: 100px; }
+            .about-container { margin-top: 110px;}
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="logo">Sympto<span>Map</span></div>
+    <button class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="navMenu">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="#">Contact</a>
+    </nav>
+</header>
+
+<div class="about-container">
+    <h1 style="margin-top: 40px;">Contact <span>Support</span></h1>
+    <div class="team-grid" style="max-width: 450px;"> <div class="card">
+            <div class="profile-img" style="display: flex; align-items: center; justify-content: center; background: white;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#56C596" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+            <h2>Email Us</h2>
+            <p><a id="contactLink" href="#" target="_blank" style="text-decoration: none; color: inherit;">
+                symptomap.support@gmail.com
+            </a></p>
+        </div>
+    </div>
+    <h1>Our <span>Team</span></h1>
+
+    <div class="team-grid">
+        <div class="card">
+            <img src="arpita.jpeg" alt="Ms. Arpita Singh" class="profile-img">
+            <h2>Ms. Arpita Singh</h2>
+            <p>Subject Matter Expert & Content Writer</p>
+        </div>
+        <div class="card">
+            <img src="Icon_Riddhima.png" alt="Ms. Riddhima" class="profile-img">
+            <h2>Ms. Riddhima</h2>
+            <p>Web Developer & Designer</p>
+        </div>
+    </div>
+
+    <div class="attribution-box">
+        The interactive 3D anatomy model featured on our homepage is owned by 
+        <strong>Hugging Face</strong> and is used under the 
+        <strong>CC0 Attribution</strong> license.
+    </div>
+</div>
+
+<footer>© 2026 SymptoMap</footer>
+
+<script>
+    document.getElementById('navToggle').addEventListener('click', () => {
+      document.getElementById('navMenu').classList.toggle('open');
+    });
+    const contactLink = document.getElementById('contactLink');
+    const email = "symptomap.support@gmail.com";
+
+    function updateEmailLink() {
+        if (window.innerWidth <= 768) {
+            contactLink.href = `mailto:${email}`;
+            contactLink.target = "_self";
+        } else {
+            contactLink.href = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}`;
+            contactLink.target = "_blank";
+        }
+    }
+    updateEmailLink();
+    window.addEventListener('resize', updateEmailLink);
+</script>
+
+</body>
+</html>
